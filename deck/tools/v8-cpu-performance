@@ -1,0 +1,14 @@
+#!/bin/bash
+# Steam launch wrapper: run the game with the CPU governor set to "performance"
+# (full 3.5 GHz boost), then put back the governor that was active before.
+# The game is limited by one CPU thread. With SteamOS's default "powersave"
+# governor (EPP balance_performance) the cores stay near 2.4 GHz and heavy
+# fights drop below 55 fps; with "performance" they hold about 59 (deck/README.md).
+# Install: cp deck/tools/v8-cpu-performance ~/.local/bin/ (chmod +x)
+# Launch options: RECOMPONE_DIRECT_TERRAIN=1 DOTNET_GCgen0size=0x10000000 ~/.local/bin/v8-cpu-performance %command%
+previous="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null)"
+restore() { steamosctl set-cpu-scaling-governor "${previous:-powersave}" > /dev/null 2>&1; }
+trap restore EXIT
+trap 'exit 143' TERM INT HUP
+steamosctl set-cpu-scaling-governor performance > /dev/null 2>&1
+"$@"

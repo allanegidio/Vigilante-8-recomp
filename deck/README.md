@@ -29,7 +29,10 @@ music. `.gitignore` already covers what lives in this checkout.
   `~/Games/Vigilante 8/` (V8 USA, used only for its music).
 - Steam shortcut "Vigilante 8 2nd Offense" (appid 3982178090):
   - Proton 11 is forced through `config.vdf` CompatToolMapping.
-  - Launch options: `RECOMPONE_DIRECT_TERRAIN=1 DOTNET_GCgen0size=0x10000000 %command%`.
+  - Launch options:
+    `RECOMPONE_DIRECT_TERRAIN=1 DOTNET_GCgen0size=0x10000000 /home/deck/.local/bin/v8-cpu-performance %command%`.
+  - `v8-cpu-performance` (from `tools/`) switches the CPU governor to "performance"
+    while the game runs and restores the previous one when it exits.
   - **Play from Steam.** Quiver's Play button doesn't pass the launch options.
 - One game has everything: the 2nd Offense engine with the 12 V8 drivers as guests (quests
   and endings), the V8 arenas, Super Dreamland 64 and both soundtracks.
@@ -100,6 +103,20 @@ come from the soak profile taken with both launch env vars on:
 Single player never turned on the developer's 4-player "direct scene" optimizations.
 `RECOMPONE_DIRECT_TERRAIN=1` turns them on. Normal play went from about 51-53 fps to
 59.5 average (52 minimum). `results/measurements-2026-11-03.txt` has every run.
+
+The biggest lever is the CPU governor (2026-11-03). SteamOS's default "powersave"
+governor (amd-pstate, EPP balance_performance) keeps the cores near 2.4 GHz and about
+6 W, because the main thread is never 100% busy: it waits on the GPU readback and the
+frame clock. `steamosctl set-cpu-scaling-governor performance` needs no root, and with it
+the cores boost to 3.5 GHz at about 10.5 W. Same build, 60-present windows below 55 fps:
+
+| Run | powersave | performance |
+| --- | --- | --- |
+| Route 66 soak (heavy fight) | 30 of 90, 55.8 fps average | 6 of 128, 58.9 average; last 40 s 60.0 (min 58.9) |
+| Casino City, normal play | 26 of 120, 56.8 average | 6 of 127, 58.9 average; last 40 s 60.0 (min 59.5) |
+
+Under "performance" the main thread uses about 60% instead of 80%, so there is headroom.
+The Steam launch wrapper `tools/v8-cpu-performance` applies it only while the game runs.
 
 Things that didn't help:
 
@@ -179,7 +196,9 @@ Things that didn't help:
   - Distance fog now fades added light instead of tinting it.
   - `weapon-view.sh` A/B: the shell's magenta column is back, and no ground holes showed
     in the captures. Not checked yet: a road or water scene under explosions.
-- Heavy fights still dip to about 42-46 fps (Casino City), 55 average.
+- FIXED (11-03): heavy fights dipped to about 42-46 fps (Casino City), 55 average.
+  - Main fix: the CPU governor wrapper (see *Performance*). Heavy fights now hold about
+    59-60 fps.
   - The shared terrain cache now also runs in single player (hooks on `func_80031678`).
     `RECOMPONE_V82_SINGLE_PLAYER_TERRAIN_CACHE=0` turns it off for A/B runs, and
     `RECOMPONE_VERIFY_SHARED_TERRAIN=1` checks every cache hit against a full read.
@@ -187,7 +206,5 @@ Things that didn't help:
   - It brought no measurable fps gain. Route 66 measured 58.7 vs 59.1 fps, the soak
     56.0 vs 56.0 and Casino City 58.1 vs 57.7, so the profile's 31% for terrain reads
     was mostly EventPipe sampling cost.
-  - In every test run the CPU stayed at 2.4 GHz and about 6 W, never boosting to
-    3.5 GHz. Runs on 11-02 boosted to 3.5 GHz and 15 W. Find out why before writing
-    more code: it is the biggest lever left.
   - Proton also starts `xalia.exe`, about 9% of a core, which this game doesn't need.
+    Not changed yet.
