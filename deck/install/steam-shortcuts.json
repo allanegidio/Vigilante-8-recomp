@@ -1,0 +1,14 @@
+[
+  {
+    "appname": "Vigilante 8",
+    "exe": "\"/home/deck/Games/Quiver Launcher/Apps/Vigilante8Classic/Vigilante8PC.exe\"",
+    "startdir": "\"/home/deck/Games/Quiver Launcher/Apps/Vigilante8Classic/\"",
+    "launch_options": ""
+  },
+  {
+    "appname": "Vigilante 8 2nd Offense",
+    "exe": "\"/home/deck/Games/Quiver Launcher/Apps/Vigilante8Classic/Vigilante8PC.exe\"",
+    "startdir": "\"/home/deck/Games/Quiver Launcher/Apps/Vigilante8Classic/\"",
+    "launch_options": "/home/deck/.local/bin/vigilante8-steam %command%"
+  }
+]

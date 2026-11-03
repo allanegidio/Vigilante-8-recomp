@@ -1,0 +1,23 @@
+{
+  "name": "Vigilante 8 Classic",
+  "folderName": "Vigilante8Classic",
+  "installPath": null,
+  "appIconUrl": "https://raw.githubusercontent.com/GTTeancum/Vigilante-8-recomp/main/docs/screenshots/v82_main_menu.png",
+  "repository": "GTTeancum/Vigilante-8-recomp",
+  "preferredVersion": null,
+  "skippedUpdateVersion": null,
+  "project": "Vigilante 8 + 2nd Offense",
+  "autoUpdate": true,
+  "linuxRunner": "proton",
+  "linuxProtonPath": "/home/deck/.local/share/Steam/steamapps/common/Proton 11.0/proton",
+  "tags": [
+    "recomp",
+    "ps1",
+    "vigilante 8",
+    "playstation",
+    "playstation 1",
+    "recompilation",
+    "widescreen",
+    "split screen"
+  ]
+}

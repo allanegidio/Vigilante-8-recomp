@@ -1,3 +1,21 @@
+# Vigilante 8 Classic for the Steam Deck (Allan's fork)
+
+Allan's copy of [GTTeancum/Vigilante-8-recomp](https://github.com/GTTeancum/Vigilante-8-recomp),
+built from main and set up for his Steam Deck. The recompilation and the mods are
+GTTeancum's work, and all credit is theirs.
+
+Changes from upstream:
+
+- `v8build.sh` builds the Windows exe from your own 2nd Offense disc, on a Mac. It is the
+  only build entry point used here.
+- `deck/` has the Steam Deck kit: install steps, Steam and Quiver setup, the graphics
+  settings, the test and profiling scripts, measurements, and the open issues. Start with
+  [deck/README.md](deck/README.md).
+
+No disc data or game-derived files are stored here.
+
+---
+
 # Vigilante 8/2nd Offense PC Recompilation - Vigilante 8 Classic
 
 An unofficial PC recompilation project for the PlayStation versions of

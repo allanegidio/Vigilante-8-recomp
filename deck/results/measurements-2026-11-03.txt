@@ -1,0 +1,51 @@
+== baseline-msaa4 (current settings)
+reached gameplay: yes
+fps avg=41.5 min=36.0 (last 40 s)
+gpu busy avg=29%  main thread cpu=91%  process cpu=121% (37 samples)
+== msaa2 MsaaSamples=2
+reached gameplay: yes
+fps avg=45.8 min=32.0 (last 40 s)
+gpu busy avg=36%  main thread cpu=92%  process cpu=120% (37 samples)
+== glthread-msaa4 env:mesa_glthread=true
+reached gameplay: yes
+fps avg=40.9 min=35.5 (last 40 s)
+gpu busy avg=25%  main thread cpu=93%  process cpu=120% (37 samples)
+== glthread-lodstock LevelOfDetail=Stock env:mesa_glthread=true
+reached gameplay: yes
+fps avg=13.8 min=13.6 (last 40 s)
+gpu busy avg=5%  main thread cpu=103%  process cpu=118% (37 samples)
+== light TextureSmoothing=False HighResolutionTextures=False PerspectiveCorrectTextures=False GeometryCorrection=False PreciseCulling=False PerspectiveCorrectColors=False EnhancedDepthBuffer=False EnhancedShadows=False EnhancedParticles=False VectorFonts=False VectorIcons=False ExtendedDrawDistance=False EnhancedFog=False MsaaSamples=2
+reached gameplay: yes
+fps avg=52.4 min=36.3 (last 40 s)
+gpu busy avg=22%  main thread cpu=60454%  process cpu=-258%  max cpu clock avg=2243 MHz (40 samples)
+== max-power (current settings)
+reached gameplay: NO
+gpu busy=7%  main thread cpu=0%  process cpu=0%  fastest core=2613 MHz  apu power=6.1 W (37 samples)
+== light-power TextureSmoothing=False HighResolutionTextures=False PerspectiveCorrectTextures=False GeometryCorrection=False PreciseCulling=False PerspectiveCorrectColors=False EnhancedDepthBuffer=False EnhancedShadows=False EnhancedParticles=False VectorFonts=False VectorIcons=False ExtendedDrawDistance=False EnhancedFog=False MsaaSamples=2
+reached gameplay: yes
+fps avg=56.8 min=47.3 (last 40 s)
+gpu busy=35%  main thread cpu=89%  process cpu=116%  fastest core=3500 MHz  apu power=13.8 W (37 samples)
+== max-nosoak env:RECOMPONE_V82_SOAK=0
+reached gameplay: yes
+fps avg=52.9 min=41.0 (last 40 s)
+gpu busy=50%  main thread cpu=82%  process cpu=107%  fastest core=3500 MHz  apu power=14.9 W (38 samples)
+== max-soak (current settings)
+reached gameplay: yes
+fps avg=50.9 min=37.9 (last 40 s)
+gpu busy=49%  main thread cpu=78%  process cpu=108%  fastest core=3500 MHz  apu power=15.0 W (37 samples)
+== msaa2-nosoak MsaaSamples=2 env:RECOMPONE_V82_SOAK=0
+reached gameplay: yes
+fps avg=54.5 min=38.7 (last 40 s)
+gpu busy=46%  main thread cpu=82%  process cpu=106%  fastest core=3500 MHz  apu power=14.9 W (37 samples)
+== msaa2-af8-nosoak MsaaSamples=2 AnisotropicFiltering=8 env:RECOMPONE_V82_SOAK=0
+reached gameplay: yes
+fps avg=48.7 min=37.4 (last 40 s)
+gpu busy=67%  main thread cpu=84%  process cpu=109%  fastest core=3500 MHz  apu power=15.2 W (37 samples)
+== gen0-256mb env:RECOMPONE_V82_SOAK=0 env:DOTNET_GCgen0size=0x10000000
+reached gameplay: yes
+fps avg=51.1 min=46.6 (last 40 s)
+gpu busy=35%  main thread cpu=85%  process cpu=107%  fastest core=2425 MHz  apu power=6.1 W (37 samples)
+== direct+gen0 env:RECOMPONE_V82_SOAK=0 env:DOTNET_GCgen0size=0x10000000 env:RECOMPONE_DIRECT_TERRAIN=1
+reached gameplay: yes
+fps avg=59.5 min=52.5 (last 40 s)
+gpu busy=36%  main thread cpu=75%  process cpu=98%  fastest core=2425 MHz  apu power=6.3 W (37 samples)
