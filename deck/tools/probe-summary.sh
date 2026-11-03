@@ -10,6 +10,12 @@ grep -a -q "stage 'gameplay'" "$probe/v8_latest.log" && echo "reached gameplay: 
 grep -a "HostFpsTitle" "$probe/v8_latest.log" | tail -n "$n" |
   awk -F'fps=' '{split($2, a, " "); s += a[1]; c++; if (min == "" || a[1] < min) min = a[1]}
        END {if (c) printf "fps avg=%.1f min=%.1f (last %d s)\n", s / c, min, c}'
+# The renderer's 60-present windows over the whole match: how many ran slow.
+grep -a "^\[EnhancedPerformance\]" "$probe/v8_latest.log" |
+  sed -nE 's/.*frame-mean-ms=([0-9.]+).*effective-fps=([0-9.]+).*/\1 \2/p' | tail -n +8 |
+  awk '{m += $1; f += $2; c++; if ($2 < 55) slow++; if (min == "" || $2 < min) min = $2}
+       END {if (c) printf "match windows: %d, below 55 fps: %d, fps avg=%.1f min=%.1f, frame mean=%.1f ms\n",
+            c, slow, f / c, min, m / c}'
 tail -n "$((n + 1))" "$probe/gpu_busy.txt" |
   awk '$3 == "-" {pt = ""; next}
        pt != "" {g += $2; t += $3 - pt; p += $4 - pp; f += $5; w += $6; c++}

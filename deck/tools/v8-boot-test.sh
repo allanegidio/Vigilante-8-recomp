@@ -3,9 +3,12 @@
 # let it run for <seconds>, then stop every process of this test.
 # Tests use their own Wine prefix (~/.cache/v8-staging/prefix), never the
 # Steam shortcut's (compatdata/3982178090).
-# usage: v8-boot-test.sh <seconds> [NAME=VALUE ...]
+# usage: [V8_TEST_EXE=<exe beside the installed one>] v8-boot-test.sh <seconds> [NAME=VALUE ...]
+# V8_TEST_EXE runs another build from the install folder (for A/B runs), so
+# game_data and mods resolve the same way.
 set -u
 A="$HOME/Games/Quiver Launcher/Apps/Vigilante8Classic"
+exe="${V8_TEST_EXE:-Vigilante8PC.exe}"
 seconds="$1"
 extra_env=("${@:2}")
 common="$HOME/.local/share/Steam/steamapps/common"
@@ -40,7 +43,7 @@ fi
   RECOMPONE_TRACE_WINDOW_FPS=1 \
   "${extra_env[@]}" \
   "$common/SteamLinuxRuntime_4/_v2-entry-point" --verb=waitforexitandrun -- \
-  "$common/Proton 11.0/proton" waitforexitandrun "$A/Vigilante8PC.exe" \
+  "$common/Proton 11.0/proton" waitforexitandrun "$A/$exe" \
   > "$out" 2>&1
 echo "timeout exit=$?"
 

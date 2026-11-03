@@ -122,6 +122,24 @@ Things that didn't help:
 - `tools/probe-gameplay.sh` is the driver under both. It sets the same env as the Steam
   shortcut, and `env:` args override it.
 
+### Weapon and car tests
+
+- `tools/weapon-sweep.sh [types ...]` runs one silent, hidden, unthrottled match per car
+  (default: retail 0-17 and guests 64-76, about 2 minutes each). The soak arms each
+  weapon kind in turn (1 rockets, 2 missiles, 3 cannon, 4 mortar, 5 mines,
+  6 flamethrower, 7 special), the script fires L2 three times per kind and captures
+  frames, and each run lands in `~/.cache/v8-staging/sweep/<type>/`.
+- `python3 -I deck/profiling/sweep_report.py <dir>` turns the logs into one row per car.
+  It shows whether each kind armed and fired, and whether the special is the engine's
+  placeholder (`0x80049880`: it only spends ammo).
+- `tools/weapon-view.sh <label> [kind] [type] [arena slot]` fires one weapon from a held
+  scene and captures 1.5 s of it. With `V8_TEST_EXE=<exe beside the installed one>`
+  (also honoured by `v8-boot-test.sh`), it runs another build for an A/B comparison.
+- `python3 -I deck/profiling/ppm_to_png.py --half <file.ppm> ...` converts captures to
+  PNG.
+- Two runs of the same input don't play out identically, so compare looks with
+  `weapon-view.sh`, not with sweep captures.
+
 ## Testing over SSH
 
 - Tests must be silent, because Allan may be next to the Deck. `v8-boot-test.sh` sets
@@ -139,6 +157,37 @@ Things that didn't help:
 
 ## Open issues (2026-11-03)
 
-- Sid Burn (a V8 guest): the special spends ammo but nothing comes out.
-- The mortar shell is almost invisible; only a small purple streak shows.
+- Specials of 11 V8 guests: the special spends ammo but nothing comes out. They are
+  Chassey Blue, Slick Clyde, Sheila, John Torque, Dave, Convoy, Loki, Boogie, Beezwax,
+  Molo and Sid Burn.
+  - Upstream never ported them. They get V8:2's placeholder callback `0x80049880`, and
+    only Houston 3 and "Y" have original ports (`sdk/V8OriginalSpecials.cs`).
+  - The weapon sweep of all 31 cars confirmed it: every other weapon arms and fires on
+    every car, and the 18 retail specials are real.
+  - Porting a special needs the original V8 code. `./v8build.sh v8-prepare` and
+    `v8-generate` recompile Allan's V8 disc (in `BINCUE/`, git-ignored) into
+    `reference/generated/recompiled/main.cs`.
+- FIXED (11-03): the mortar shell was almost invisible; only a small purple streak
+  showed.
+  - Cause: with EnhancedParticles on, the HD shader dimmed additive effects through a
+    coverage gate measured in each triangle's UV box. The shell is a 4-triangle fan, so
+    it lost about 90% of its light.
+  - `GlShaders.cs` now keeps the light of world additive effects. Vehicle parts keep the
+    old gate. Texels under 24/255 are dropped and the rim fades in, which keeps the
+    depth/stencil footprint near the old one: kept fragments make the deferred roads,
+    water and weather skip those pixels.
+  - Distance fog now fades added light instead of tinting it.
+  - `weapon-view.sh` A/B: the shell's magenta column is back, and no ground holes showed
+    in the captures. Not checked yet: a road or water scene under explosions.
 - Heavy fights still dip to about 42-46 fps (Casino City), 55 average.
+  - The shared terrain cache now also runs in single player (hooks on `func_80031678`).
+    `RECOMPONE_V82_SINGLE_PLAYER_TERRAIN_CACHE=0` turns it off for A/B runs, and
+    `RECOMPONE_VERIFY_SHARED_TERRAIN=1` checks every cache hit against a full read.
+  - The verification found 0 mismatches in about 1 million hits (Route 66 and Casino City).
+  - It brought no measurable fps gain. Route 66 measured 58.7 vs 59.1 fps, the soak
+    56.0 vs 56.0 and Casino City 58.1 vs 57.7, so the profile's 31% for terrain reads
+    was mostly EventPipe sampling cost.
+  - In every test run the CPU stayed at 2.4 GHz and about 6 W, never boosting to
+    3.5 GHz. Runs on 11-02 boosted to 3.5 GHz and 15 W. Find out why before writing
+    more code: it is the biggest lever left.
+  - Proton also starts `xalia.exe`, about 9% of a core, which this game doesn't need.

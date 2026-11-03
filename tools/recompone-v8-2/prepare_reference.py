@@ -445,6 +445,18 @@ PROVEN_PATCHES = [
     },
     {
         "overlay": "main",
+        "address": "80031678",
+        "target": "RecompOne.Runtime.Sdk.V82Compat.BeginWorldRenderTerrainCache",
+        "mode": "pre",
+    },
+    {
+        "overlay": "main",
+        "address": "80031678",
+        "target": "RecompOne.Runtime.Sdk.V82Compat.EndWorldRenderTerrainCache",
+        "mode": "post",
+    },
+    {
+        "overlay": "main",
         "address": "80050B38",
         "target": "RecompOne.Runtime.Sdk.V82Compat.BeginSceneryPass",
         "mode": "pre",

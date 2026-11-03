@@ -49,3 +49,40 @@ gpu busy=35%  main thread cpu=85%  process cpu=107%  fastest core=2425 MHz  apu 
 reached gameplay: yes
 fps avg=59.5 min=52.5 (last 40 s)
 gpu busy=36%  main thread cpu=75%  process cpu=98%  fastest core=2425 MHz  apu power=6.3 W (37 samples)
+######## 2026-11-03_16:37 fixes-v2 exe 52919a40
+== verify  : hits=[SharedTerrainVerified] patches=565564 mismatch=0 exceptions=0 gameplay=3
+== verify env:RECOMPONE_V82_ARENA_SLOT_SEQUENCE=15 : hits=[SharedTerrainVerified] patches=469430 mismatch=0 exceptions=0 gameplay=3
+== v2-cache-on-nosoak env:RECOMPONE_V82_SOAK=0
+reached gameplay: yes
+fps avg=58.7 min=43.9 (last 40 s)
+match windows: 123, below 55 fps: 19, fps avg=57.5 min=15.0, frame mean=18.1 ms
+gpu busy=29%  main thread cpu=75%  process cpu=99%  fastest core=2425 MHz  apu power=6.3 W (37 samples)
+== v2-cache-off-nosoak env:RECOMPONE_V82_SOAK=0 env:RECOMPONE_V82_SINGLE_PLAYER_TERRAIN_CACHE=0
+reached gameplay: yes
+fps avg=59.1 min=51.5 (last 40 s)
+match windows: 124, below 55 fps: 19, fps avg=58.0 min=15.0, frame mean=17.9 ms
+gpu busy=49%  main thread cpu=72%  process cpu=94%  fastest core=2425 MHz  apu power=6.3 W (37 samples)
+== v2-cache-on-soak (current settings)
+reached gameplay: yes
+fps avg=53.8 min=43.8 (last 40 s)
+match windows: 119, below 55 fps: 37, fps avg=56.0 min=15.0, frame mean=18.6 ms
+gpu busy=48%  main thread cpu=78%  process cpu=104%  fastest core=2425 MHz  apu power=6.3 W (37 samples)
+== v2-cache-off-soak env:RECOMPONE_V82_SINGLE_PLAYER_TERRAIN_CACHE=0
+reached gameplay: yes
+fps avg=58.1 min=48.9 (last 40 s)
+match windows: 119, below 55 fps: 37, fps avg=56.0 min=15.0, frame mean=18.6 ms
+gpu busy=57%  main thread cpu=77%  process cpu=102%  fastest core=2425 MHz  apu power=6.3 W (37 samples)
+== v2-cache-on-casino-nosoak env:RECOMPONE_V82_SOAK=0 env:RECOMPONE_V82_ARENA_SLOT_SEQUENCE=15
+reached gameplay: yes
+fps avg=58.1 min=46.3 (last 40 s)
+match windows: 116, below 55 fps: 42, fps avg=54.9 min=15.0, frame mean=19.1 ms
+gpu busy=35%  main thread cpu=81%  process cpu=100%  fastest core=2425 MHz  apu power=6.1 W (37 samples)
+== v2-cache-off-casino-nosoak env:RECOMPONE_V82_SOAK=0 env:RECOMPONE_V82_ARENA_SLOT_SEQUENCE=15 env:RECOMPONE_V82_SINGLE_PLAYER_TERRAIN_CACHE=0
+reached gameplay: yes
+fps avg=57.7 min=44.5 (last 40 s)
+match windows: 117, below 55 fps: 36, fps avg=55.4 min=15.0, frame mean=19.0 ms
+gpu busy=30%  main thread cpu=80%  process cpu=103%  fastest core=2483 MHz  apu power=6.5 W (37 samples)
+######## 2026-11-03_17:01 fixes-v3 exe ae25de98
+== v3 verify casino: hits= mismatch=0 exceptions=0 link=0
+/home/deck/.cache/v8-staging/tools/v8-boot-test.sh: line 22: /proc//environ: No such file or directory
+mortar-v3: 0 captures, fired=0
