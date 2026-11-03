@@ -1,5 +1,7 @@
 #!/bin/bash
 # Launch a shortcut through Steam, wait for a log line, screenshot, then close it.
+# It starts the real game with Allan's own profile, so it plays sound and shows
+# on screen: ask Allan before running it.
 # usage: steam-launch-test.sh <appid> <gameid64> <log file> <log pattern> <shot.png>
 set -u
 appid="$1"; gameid="$2"; log="$3"; pattern="$4"; shot="$5"

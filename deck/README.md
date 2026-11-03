@@ -88,13 +88,14 @@ music. `.gitignore` already covers what lives in this checkout.
 The game clock runs at a fixed 60 emulated frames per second (`Host/FrameClock.cs`).
 Any frame over 16.7 ms plays in slow motion; there is no frame skip.
 
-What we found (EventPipe profile, 2026-11-03), with the main thread as the limit:
+What we found (EventPipe profiles, 2026-11-03; the main thread is the limit). The numbers
+come from the soak profile taken with both launch env vars on:
 
 | Cost on the main thread | Cause | Status |
 | --- | --- | --- |
-| ~25% | .NET GC suspensions, which are expensive under Wine | Fixed: `DOTNET_GCgen0size=0x10000000` |
-| ~20% | `ReadTerrainCellTextures` > `ReadDreamcastTerrainDistanceColors` | Partly fixed by `RECOMPONE_DIRECT_TERRAIN=1`. The terrain cache runs only in 4-player mode (`BeginSharedTerrainFrame`). |
-| ~21% | Edge-pool `ReadVram` GPU readback stall (LOD Maximum) | Open |
+| 31% | `ReadTerrainCellTextures` > `ReadDreamcastTerrainDistanceColors` (24%) | Open. The terrain cache runs only in 4-player mode (`BeginSharedTerrainFrame`). |
+| 26% | Edge-pool `ReadVram` GPU readback stall (LOD Maximum) | Open |
+| ~20% | `Thread.PollGC` waits | Mostly the profiler's own cost: EventPipe suspends the runtime every 1 ms, which is slow under Wine. Real GCs are rare (`gc=` in `[EnhancedPerformance]`). `DOTNET_GCgen0size=0x10000000` makes them rarer still. |
 
 Single player never turned on the developer's 4-player "direct scene" optimizations.
 `RECOMPONE_DIRECT_TERRAIN=1` turns them on. Normal play went from about 51-53 fps to
@@ -123,6 +124,9 @@ Things that didn't help:
 
 ## Testing over SSH
 
+- Tests must be silent, because Allan may be next to the Deck. `v8-boot-test.sh` sets
+  `SDL_AUDIODRIVER=dummy` and `RECOMPONE_MUTE=1`. `steam-launch-test.sh` starts the real
+  game with sound, so ask first.
 - SteamOS sets `KillUserProcesses=True`. A job that must outlive the SSH session needs
   `systemd-run --user --scope`.
 - A plain `systemd-run` unit can't see the X socket. The scripts take `DISPLAY` and

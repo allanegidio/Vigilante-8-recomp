@@ -25,8 +25,12 @@ inhibit=()
 if systemd-inhibit --what=sleep:idle --mode=block true 2>/dev/null; then
   inhibit=(systemd-inhibit --what=sleep:idle --mode=block --who=v8-test --why="Vigilante 8 test run")
 fi
+# Tests are silent: Allan may be next to the Deck. SDL's dummy driver plays
+# nothing, and RECOMPONE_MUTE zeroes the mix as well.
 "${inhibit[@]}" timeout --signal=TERM "$seconds" env \
   V8_BOOT_TEST=1 \
+  SDL_AUDIODRIVER=dummy \
+  RECOMPONE_MUTE=1 \
   STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam" \
   STEAM_COMPAT_DATA_PATH="$compat" \
   WINEDEBUG=-all \
